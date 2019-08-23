@@ -10,11 +10,20 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-    proxyTable: {},
+    //解决跨域请求数据问题
+    proxyTable: {   //vue渲染服务和接口代理服务都是webpack-dev-server
+      '/api':{  //匹配所有以'/api'开头的请求路径
+        target:'http://localhost:4000',   //代理目标的基础路径
+        changeOrigin:true,   // 如果接口跨域，需要进行这个参数配置
+        pathRewrite:{
+          '^/api': ''   //重写路径 去掉路径中开头的'/api'
+        }
+      }
+    },
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
-    port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
+    port: 8082, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: true,
     errorOverlay: true,
     notifyOnErrors: true,

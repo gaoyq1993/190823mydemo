@@ -12,11 +12,11 @@ export default function ajax (url, data={}, type='GET') {
       // 准备url query参数数据
       let dataStr = '' //数据拼接字符串
       Object.keys(data).forEach(key => {
-        dataStr += key + '=' + data[key] + '&'
+        dataStr += key + '=' + data[key] + '&'   //key=12&key=aa&key=172.25
       })
-      if (dataStr !== '') {
+      if (dataStr !== '') {  //最后个&下标 13   再截取dataStr 0-13的字符串
         dataStr = dataStr.substring(0, dataStr.lastIndexOf('&'))
-        url = url + '?' + dataStr
+        url = url + '?' + dataStr  //连接url
       }
       // 发送get请求
       promise = axios.get(url)

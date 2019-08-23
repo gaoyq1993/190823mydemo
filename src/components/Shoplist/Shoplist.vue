@@ -1,49 +1,59 @@
 <template>
 
     <div class="home">
-      <div class="home_container">
-        <img src="./images/a2.jpg">
-        <div class="home_container_main">
-          <p class="evaluate">好评</p>
-          <span>甜品饮品1</span>
-          <span>评分3.6</span>
-          <span>售价$20</span>
+      <div v-if="shops.length">
+        <div class="home_container" v-for="(shop,index) in shops" :key="index" @click="$router.push('/shop')">
+          <img src="./images/a1.jpg">
+          <div class="home_container_main">
+            <div class="main_top">
+              <span>品牌</span>
+              <p class="ellipsis">{{shop.name}}</p>
+              <ul>
+                <li v-for="(support,index) in shop.supports" :key="index">
+                  {{support.icon_name}}
+                </li>
+              </ul>
+            </div>
+            <div class="main_content">
+              <Star :score="shop.rating" :size="24"/>
+              <span class="rating">{{shop.rating}}</span>
+              <span class="ordernum">月销{{shop.recent_order_num}}单</span>
+              <span class="deliverytxt">{{shop.delivery_mode.text}}</span>
+            </div>
+            <div class="main_footer">
+            <span>
+              ￥{{shop.float_minimum_order_amount}}起送
+              /配送费约￥{{shop.float_delivery_fee}}
+            </span>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="home_container">
-        <img src="./images/a3.jpg">
-        <div class="home_container_main">
-          <p class="evaluate">好评</p>
-          <span>甜品饮品2</span>
-          <span>评分3.2</span>
-          <span>售价$21</span>
-        </div>
-      </div>
-      <div class="home_container">
-        <img src="./images/a4.jpg">
-        <div class="home_container_main">
-          <p class="evaluate">中评</p>
-          <span>甜品饮品3</span>
-          <span>评分3.9</span>
-          <span>售价$20</span>
-        </div>
-      </div>
-      <div class="home_container">
-        <img src="./images/a4.jpg">
-        <div class="home_container_main">
-          <p class="evaluate">差评</p>
-          <span>甜品饮品7</span>
-          <span>评分4.1</span>
-          <span>售价$20</span>
-        </div>
-      </div>
+      <ul v-else>
+        <li v-for="item in 6">
+          <img src="./images/shop_back.svg" alt="back">
+        </li>
+      </ul>
     </div>
 
 </template>
 
 <script>
+  import {mapState} from 'vuex'
+  import Star from '../Star/Star'
     export default {
-        name: "Shoplist"
+    data(){
+      return{
+        // baseImgUrl+shop.image_path 图片地址 无效,  用本地图片代替
+        baseImgUrl:'http://cangdu.org:8001/img/'
+      }
+    },
+      computed:{
+          ...mapState(['shops'])
+      },
+      components:{
+        Star
+      }
     }
 </script>
 
@@ -78,19 +88,67 @@
           height 100px
           margin 10px
         .home_container_main
+          margin-left 1%
           margin-top 10px
-          width 65%
+          width calc(100% - 140px)
           float left
-          span
-            display block
-            margin-left 15px
-            margin-bottom 10px
-            width 60%
-            font-size 16px
-            color #666
-          .evaluate
-            float right
-            width 20%
+          .main_top
+            height 32px
+            width 100%
+            span:nth-of-type(1)
+              font-size 13px
+              margin-top 8px
+              background-color #FFD700
+              float: left
+            p
+              line-height 32px
+              width 45%
+              font-weight:bold
+              font-size 100%
+              margin-left 2%
+              float: left
+            ul
+              letter-spacing:8px
+              font-size 13px
+              color #A9A9A9
+              float: right
+              li
+                line-height 32px
+                float left
+                list-style-type:none
+          .main_content
+            height 32px
+            width 100%
+            span
+              font-size 10px
+            .rating
+              color darkorange
+              font-weight:bold
+              margin-left 2%
+              line-height 32px
+              font-size 12px
+              float: left
+            .ordernum
+              color #A9A9A9
+              margin-left 3%
+              line-height 32px
+              float: left
+            .deliverytxt
+              margin-right 1%
+              margin-top 5px
+              display block
+              border 1px solid #02a774
+              font-size 12px
+              color #02a774
+              float: right
+          .main_footer
+            height 32px
+            width 100%
+            span
+              letter-spacing:1px
+              font-size 13px
+              line-height 32px
+              color: #808080
 
 
 
